@@ -4,10 +4,11 @@
 // Claude Boisgerault le 23-12-16
 // Version 0.1
 // ce programme permet de lire un numéro de badge
-// avec un lecteur en protocol wiegand le paramétrage 
+// avec un lecteur en protocol wiegand le paramétrage
 // de lecture du badge se fera par un terminal.
 // Le numéro du badge sera envoyé en émulant le clavier
 // par l'intermédiaire d'un Arduino Léonardo.
+//
 //----------------------------------------------------------
 
 // Déclaration des constantes des broches
@@ -35,37 +36,57 @@ void setup()   {
 //-----------------------------
 // début du programme principal
 //-----------------------------
-void loop(){
+void loop() {
+
   valeur_d0 = digitalRead (DATA_0);
   valeur_d1 = digitalRead (DATA_1);
   resultat = valeur_d0 + valeur_d1;
-  
-  // On vérifie s'il y a au moins un data à 0 
-  if ( resultat < 2 ) 
+
+  // On vérifie s'il y a au moins un data à 0
+  if ( resultat < 2 )
+  {
+    string bin_badge = lecture_badge();
+  }
+
+} // fin de la boucle Void()
+
+
+//-----------------------------
+// début des fonctions
+//-----------------------------
+
+void lecture_badge() {
+  valeur_d0 = digitalRead (DATA_0);
+  valeur_d1 = digitalRead (DATA_1);
+  resultat = valeur_d0 + valeur_d1;
+
+  // On vérifie s'il y a au moins un data à 0
+  if ( resultat < 2 )
   {
     // on vérifie s'il y a au moins un data à 1
-    if (resultat > 0 ) 
+    if (resultat > 0 )
     {
-      finlecture = 1; /* le test de data 0 et 1 est ok on initialise la variable 
+      finlecture = 1; /* le test de data 0 et 1 est ok on initialise la variable
                       finlecture pour lancer la boucle "do" "début lecture badge" */
       //Serial.print ( "-lecture du badge-\n" );
       //---------------------------
       // boucle début lecture badge
       //---------------------------
-      do 
+      do
       {
         valeur_d0 = digitalRead (DATA_0); // on lit l'état de data 0 sur le lecteur
         valeur_d1 = digitalRead (DATA_1); // on lit l'état de data 1 sur le lecteur
-        resultat = valeur_d0 + (valeur_d1 * 2); /* resultat=3 > pas de valeur de bit envoyé
-                  resultat=2 > valeur de bit 0 envoyé 
-                  resultat=1 > valeur de bit 1 envoyé
-                  */
-        
+        resultat = valeur_d0 + (valeur_d1 * 2);
+        /* resultat=3 > pas de valeur de bit envoyé
+        resultat=2 > valeur de bit 0 envoyé
+        resultat=1 > valeur de bit 1 envoyé
+        */
+
         //---------------------------------------
         // on lit une valeur de bit de donnée à 0
         //---------------------------------------
         if ( resultat == 2 )
-        {  
+        {
           Serial.print("0"); // on envoie la nouvelle valeur de bit 0
           temps_debut = micros(); // top chrono temps référent
           // boucle de test timeout de data 0
@@ -80,9 +101,9 @@ void loop(){
               Serial.print("!00!"); // on envoie le code erreur !00! timeout  sur data 0
               //Serial.println( String (temps_timeout));
             }
-          }while (valeur_d0 == 0);
-        } 
-        
+          } while (valeur_d0 == 0);
+        }
+
         //----------------------------------------
         // on lit une valeur de  bit de donnée à 1
         //----------------------------------------
@@ -101,8 +122,8 @@ void loop(){
               finlecture = 0; // on oblige la sortie de la boucle "do" début lecture badge
               Serial.print("!01!"); // on envoie le code erreur !01! "timeout sur data 1"
             }
-            
-          }while (valeur_d1 == 0);
+
+          } while (valeur_d1 == 0);
         }
         //-------------------------------------------------------
         // il n'y a plus de donnée  data 0 ou 1 envoyé
@@ -111,7 +132,7 @@ void loop(){
         if ( resultat == 3)
         {
           temps_debut = micros();
-           // boucle de test timeout entre 2 donnée de bit
+          // boucle de test timeout entre 2 donnée de bit
           do
           {
             valeur_d0 = digitalRead (DATA_0); // on lit l'état de data 0 sur le lecteur
@@ -126,16 +147,16 @@ void loop(){
               resultat = 0; // on oblige la sortie de la boucle "do" timeout
             }
 
-          }while (resultat == 3);
-          
+          } while (resultat == 3);
+
         }
-      
-      }while (finlecture == 1); // on sort de la boucle "do" début lecture badge
+
+      } while (finlecture == 1); // on sort de la boucle "do" début lecture badge
       Serial.print("#\n"); // on envoie le code de fin lecture badge avec retour ligne
-    
+
     }
-    
+
   }
-} // fin de la boucle Void()
+}
 
 
