@@ -46,7 +46,7 @@ void loop(){
 		if (resultat > 0 ) 
 		{
 			finlecture = 1; /* le test de data 0 et 1 est ok on initialise la variable 
-											finlecture pour lancer la boucle "do" "début lecture badge" */
+					finlecture pour lancer la boucle "do" "début lecture badge" */
 			//Serial.print ( "-lecture du badge-\n" );
 			//---------------------------
 			// boucle début lecture badge
@@ -60,14 +60,14 @@ void loop(){
 									resultat=1 > valeur de bit 1 envoyé
 									*/
 				
-        //---------------------------------------
+        			//---------------------------------------
 				// on lit une valeur de bit de donnée à 0
 				//---------------------------------------
 				if ( resultat == 2 )
 				{  
 					Serial.print("0"); // on envoie la nouvelle valeur de bit 0
 					temps_debut = micros(); // top chrono temps référent
-          // boucle de test timeout de data 0
+          				// boucle de test timeout de data 0
 					do
 					{
 						valeur_d0 = digitalRead (DATA_0); // on lit l'état de data 0 sur le lecteur
@@ -77,7 +77,7 @@ void loop(){
 						{
 							finlecture = 0; // on oblige la sortie de la boucle "do" début lecture badge
 							Serial.print("!00!"); // on envoie le code erreur !00! timeout  sur data 0
-              Serial.println( String (temps_timeout));
+              						Serial.println( String (temps_timeout));
 						}
 					}while (valeur_d0 == 0);
 				} 
@@ -89,7 +89,7 @@ void loop(){
 				{
 					Serial.print("1"); // on envoie la nouvelle valeur de bit 1
 					temps_debut = micros();
-          // boucle de test timeout de data 1
+          				// boucle de test timeout de data 1
 					do
 					{
 						valeur_d1 = digitalRead (DATA_1);// on lit l'état de data 1 sur le lecteur
@@ -122,7 +122,7 @@ void loop(){
 						{
 							finlecture = 0; // on oblige la sortie de la boucle "do" début lecture badge
 							Serial.print("!03!"); // on envoie le code erreur !03! "timeout entre 2 donnée de bit"
-              resultat = 0; // on oblige la sortie de la boucle "do" timeout
+              						resultat = 0; // on oblige la sortie de la boucle "do" timeout
 						}
 
 					}while (resultat == 3);
