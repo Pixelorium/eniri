@@ -171,7 +171,7 @@ void loop() {
       //   Fin de la lecture du badge
       // ---------------------------------------------------------
           
-      nu_badge_deci = bin_deci(numero_bin);// on convertit le binaire en hexadecimal
+      nu_badge_deci = bin_deci(numero_bin);// on convertit le binaire en decimal
       Keyboard.press(KEY_LEFT_SHIFT);
       Keyboard.print(nu_badge_deci); // on tape le numéro du badge
       Keyboard.releaseAll();
