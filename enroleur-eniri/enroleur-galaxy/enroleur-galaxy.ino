@@ -195,7 +195,7 @@ void loop() {
 unsigned long bin_deci(String binaire){
  
   /* Convertit l'argument String 'binaire' en decimal 
-     et retour la valeur dans une variable du type
+     et retourne la valeur dans une variable du type
      unsigned long.     
   */
   unsigned long resultat = 0;
